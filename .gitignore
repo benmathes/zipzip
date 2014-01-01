@@ -7,3 +7,8 @@ pom.xml
 /checkouts
 /.env
 /target
+
+
+# lighttable files
+.lein-repl-history
+.nrepl-port
