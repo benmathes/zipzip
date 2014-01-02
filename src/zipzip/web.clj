@@ -9,11 +9,13 @@
             [ring.adapter.jetty :as jetty]
             [ring.middleware.basic-authentication :as basic]
             [cemerick.drawbridge :as drawbridge]
-            [environ.core :refer [env]]))
+            [environ.core :refer [env]]
+            [monger.core :as monger])
+  (:import [com.mongodb MongoOptions ServerAddress]))
 
 (defn- authenticated? [user pass]
-  ;; TODO: heroku config:add REPL_USER=[...] REPL_PASSWORD=[...]
-  (= [user pass] [(env :repl-user false) (env :repl-password false)]))
+  (= [user pass] [(env :repl-user 'zipzip_admin) (env :repl-password 'asela4389afje)]))
+
 
 (def ^:private drawbridge
   (-> (drawbridge/ring-handler)
@@ -26,7 +28,7 @@
   (GET "/" []
        {:status 200
         :headers {"Content-Type" "text/plain"}
-        :body (pr-str ["Hello" :from 'Heroku])})
+        :body (pr-str {foo: bar})})
   (ANY "*" []
        (route/not-found (slurp (io/resource "404.html")))))
 
@@ -49,6 +51,5 @@
                          (site {:session {:store store}}))
                      {:port port :join? false})))
 
-;; For interactive development:
-;; (.stop server)
-;; (def server (-main))
+
+
