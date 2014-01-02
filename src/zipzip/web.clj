@@ -28,7 +28,7 @@
   (GET "/" []
        {:status 200
         :headers {"Content-Type" "text/plain"}
-        :body (pr-str {foo: bar})})
+        :body (pr-str "hello world")})
   (ANY "*" []
        (route/not-found (slurp (io/resource "404.html")))))
 
@@ -41,8 +41,7 @@
             :body (slurp (io/resource "500.html"))}))))
 
 (defn -main [& [port]]
-  (let [port (Integer. (or port (env :port) 5000))
-        ;; TODO: heroku config:add SESSION_SECRET=$RANDOM_16_CHARS
+  (let [port (Integer. (or port (env :port) 8000))
         store (cookie/cookie-store {:key (env :session-secret)})]
     (jetty/run-jetty (-> #'app
                          ((if (env :production)
